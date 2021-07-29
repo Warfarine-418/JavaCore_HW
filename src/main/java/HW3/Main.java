@@ -6,14 +6,14 @@ public class Main {
 
         int[] array1 = {1, 2, 3, 4, 5, 6, 7};
         swapTheArrEl(array1, 1, 2);
-        PrintArray(array1);
+        printArray(array1);
 
 
     }
 
-    public static void PrintArray(int[] array) {
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i] + " | ");
+    public static void printArray(int[] array) {
+        for (int j : array) {
+            System.out.print(j + " | ");
         }
         System.out.println();
     }
