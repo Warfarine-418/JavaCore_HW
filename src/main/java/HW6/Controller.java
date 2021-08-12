@@ -1,6 +1,7 @@
 package HW6;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public class Controller {
         variants.put(5, Period.FIVE_DAYS);
     }
 
-    public void getWeather(String userInput) throws IOException {
+    public void getWeather(String userInput) throws IOException, SQLException {
         Integer userIntegerInput = Integer.parseInt(userInput);
         switch (variants.get(userIntegerInput)) {
             case NOW:

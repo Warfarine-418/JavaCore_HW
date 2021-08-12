@@ -1,5 +1,6 @@
 package HW6;
 
+import HW6.entity.Weather;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -7,6 +8,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static HW6.Period.FIVE_DAYS;
@@ -35,7 +39,7 @@ public class YandexWeatherHW {
     private static final OkHttpClient okHttpClient = new OkHttpClient();
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public void getWeather(Period period) throws IOException {
+    public void getWeather(Period period) throws IOException, SQLException {
         switch (period) {
             case NOW:
                 HttpUrl urlOne = new HttpUrl.Builder()
@@ -62,11 +66,20 @@ public class YandexWeatherHW {
                 String locationNow = objectMapper.readTree(responseStringOneDay).at("/geo_object/locality/name").asText();
                 String temperatureNow = objectMapper.readTree(responseStringOneDay).at("/fact/temp").asText();
                 String conditionNow = objectMapper.readTree(responseStringOneDay).at("/fact/condition").asText();
+                Double tempNowDouble = Double.parseDouble(temperatureNow);
 
-                //System.out.println("Город: " + locationNow);
-                System.out.println("Температура сейчас: " + temperatureNow + " С");
+                System.out.println("Город: " + locationNow);
+                System.out.println("Температура сейчас: " + tempNowDouble + " С");
                 System.out.println("Состояние: " + conditionNow);
+                DataBaseRepository dataBaseRepository = new DataBaseRepository();
+                List<Weather> weatherListNow = new ArrayList<Weather>();
+
+                weatherListNow.add(new Weather(locationNow, "Now", tempNowDouble, conditionNow));
+                dataBaseRepository.saveWeatherToDataBase(weatherListNow);
+
+
                 break;
+
 
             case FIVE_DAYS:
                 HttpUrl urlFive = new HttpUrl.Builder()
@@ -96,42 +109,59 @@ public class YandexWeatherHW {
 
                 String dateFirstDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(0).at("/date").asText();
                 String temperatureFirstDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(0).at("/parts/day/temp_avg").asText();
+                String conditionFirstDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(0).at("/parts/day/condition").asText();
+                Double tempFirstDouble = Double.parseDouble(temperatureFirstDay);
 
                 String dateSecondDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(1).at("/date").asText();
                 String temperatureSecondDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(1).at("/parts/day/temp_avg").asText();
+                String conditionSecondDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(1).at("/parts/day/condition").asText();
+                Double tempSecondDouble = Double.parseDouble(temperatureSecondDay);
 
                 String dateThirdDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(2).at("/date").asText();
                 String temperatureThirdDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(2).at("/parts/day/temp_avg").asText();
+                String conditionThirdDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(2).at("/parts/day/condition").asText();
+                Double tempThirdDouble = Double.parseDouble(temperatureThirdDay);
 
                 String dateFourthDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(3).at("/date").asText();
                 String temperatureFourthDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(3).at("/parts/day/temp_avg").asText();
+                String conditionFourthDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(3).at("/parts/day/condition").asText();
+                Double tempFourthDouble = Double.parseDouble(temperatureFourthDay);
 
                 String dateFifthDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(4).at("/date").asText();
                 String temperatureFifthDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(4).at("/parts/day/temp_avg").asText();
+                String conditionFifthDay = objectMapper.readTree(responseStringFiveDay).at("/forecasts").get(4).at("/parts/day/condition").asText();
+                Double tempFifthDouble = Double.parseDouble(temperatureFifthDay);
 
 //                System.out.println("Сейчас");
-                System.out.println("Город: " + locationFive);
+//                System.out.println("Город: " + locationFive);
 //                System.out.println("Температура сейчас: " + temperatureFive + " градуса");
 //                System.out.println("Состояние: " + conditionFive);
 //                System.out.println("----------");
-                System.out.println("Дата :  Температура");
-                System.out.println(dateFirstDay + " : " + temperatureFirstDay);
-                System.out.println(dateSecondDay + " : " + temperatureSecondDay);
-                System.out.println(dateThirdDay + " : " + temperatureThirdDay);
-                System.out.println(dateFourthDay + " : " + temperatureFourthDay);
-                System.out.println(dateFifthDay + " : " + temperatureFifthDay);
+//                System.out.println("Дата :  Температура");
+//                System.out.println(dateFirstDay + " : " + temperatureFirstDay);
+//                System.out.println(dateSecondDay + " : " + temperatureSecondDay);
+//                System.out.println(dateThirdDay + " : " + temperatureThirdDay);
+//                System.out.println(dateFourthDay + " : " + temperatureFourthDay);
+//                System.out.println(dateFifthDay + " : " + temperatureFifthDay);
 
+                DataBaseRepository dataBaseRepositoryFive = new DataBaseRepository();
+                List<Weather> weatherListFive = new ArrayList<Weather>();
+
+                weatherListFive.add(new Weather(locationFive, dateFirstDay, tempFirstDouble, conditionFirstDay));
+                weatherListFive.add(new Weather(locationFive, dateSecondDay, tempSecondDouble, conditionSecondDay));
+                weatherListFive.add(new Weather(locationFive, dateThirdDay, tempThirdDouble, conditionThirdDay));
+                weatherListFive.add(new Weather(locationFive, dateFourthDay, tempFourthDouble, conditionFourthDay));
+                weatherListFive.add(new Weather(locationFive, dateFifthDay, tempFifthDouble, conditionFifthDay));
+                dataBaseRepositoryFive.saveWeatherToDataBase(weatherListFive);
+                for (Weather weather:weatherListFive) {
+                    System.out.println(weather);
+                }
+                //System.out.println(dataBaseRepositoryFive.getSavedToDBWeather());
                 break;
         }
 
     }
 
-
-    public static void main(String[] args) throws IOException {
-
-        //getWeather(FIVE_DAYS);
-
-    }
 }
 
 // Москва = 55.7522, 37.6156. (ш и д)

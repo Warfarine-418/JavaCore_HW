@@ -1,6 +1,7 @@
 package HW6;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class UserInterfaceView {
@@ -18,10 +19,10 @@ public class UserInterfaceView {
                 System.out.println("До свидания!");
                 break;
             }
-            if (command.equals("1") | command.equals("5")){
+            if (command.equals("1") | command.equals("5")) {
                 try {
                     controller.getWeather(command);
-                } catch (IOException e) {
+                } catch (IOException | SQLException e) {
                     e.printStackTrace();
                 }
             } else System.out.println("Вы ввели некорректные данные, попробуйте еще раз");
