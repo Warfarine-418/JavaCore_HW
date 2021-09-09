@@ -1,5 +1,6 @@
 package HW_06;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,9 +15,10 @@ public class ProjectSubMenu extends BaseView {
     @FindBy(xpath = "//span[text()='Мои проекты']")
     public WebElement myProjectMenuItem;
 
+    @Step("Перейти на страницу 'Мои проекты'")
     public void goToMyProjectPage() {
         myProjectMenuItem.click();
         webDriverWait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath(ProjectRequestPage.createProjectXpathLocator)));
+                By.xpath(ProjectRequestPage.CREATE_PROJECT_XPATH_LOCATOR)));
     }
 }

@@ -1,5 +1,6 @@
 package HW_06;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,15 +12,16 @@ public class ProjectRequestPage extends BaseView {
         super(driver);
     }
 
-    @FindBy(xpath = createProjectXpathLocator)
+    @FindBy(xpath = CREATE_PROJECT_XPATH_LOCATOR)
     public WebElement createProjectButton;
 
+    @Step("Создать проект")
     public CreateProjectPage createProject() {
         createProjectButton.click();
         webDriverWait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath(CreateProjectPage.saveAndCloseButtonXpathLocator)));
+                By.xpath(CreateProjectPage.SAVE_AND_CLOSE_BUTTON_XPATH_LOCATOR)));
         return new CreateProjectPage(driver);
     }
 
-    public static final String createProjectXpathLocator = "//a[text()='Создать проект']";
+    public static final String CREATE_PROJECT_XPATH_LOCATOR = "//a[text()='Создать проект']";
 }

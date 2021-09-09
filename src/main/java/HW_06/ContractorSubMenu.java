@@ -1,5 +1,6 @@
 package HW_06;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,9 +15,10 @@ public class ContractorSubMenu extends BaseView {
     @FindBy(xpath = "//span[text()='Контактные лица']")
     public WebElement contactMenuItem;
 
+    @Step("Перейти на страницу 'Контактные лица'")
     public void goToContactPage() {
         contactMenuItem.click();
         webDriverWait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath(ContactRequestPage.createContactXpathLocator)));
+                By.xpath(ContactRequestPage.CREATE_CONTACT_XPATH_LOCATOR)));
     }
 }

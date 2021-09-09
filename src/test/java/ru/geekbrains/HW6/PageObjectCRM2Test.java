@@ -1,6 +1,8 @@
 package ru.geekbrains.HW6;
 
 import HW_06.*;
+import io.qameta.allure.Description;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -8,8 +10,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static ru.yandex.qatools.htmlelements.matchers.WebElementMatchers.isDisplayed;
 
+@Story("Контактное лицо")
 public class PageObjectCRM2Test extends BaseTest {
+
     @Test
+    @Description("Тест логина и создания контактного лица")
     void createContactInCrmWithPageObjectTest() {
         driver.get("https://crm.geekbrains.space/");
         new LoginPage(driver)
